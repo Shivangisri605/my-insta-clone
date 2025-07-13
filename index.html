@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Clone</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #262626;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .icon {
+            cursor: pointer;
+            color: #262626;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* Stories */
+        .stories {
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #dbdbdb;
+            overflow-x: auto;
+        }
+        
+        .stories-container {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 10px;
+        }
+        
+        .story {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            min-width: 60px;
+        }
+        
+        .story-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .story-username {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+        
+        /* Post */
+        .post {
+            background: white;
+            border-bottom: 1px solid #dbdbdb;
+            margin-bottom: 20px;
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+        }
+        
+        .post-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .post-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #8b5cf6, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .post-username {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .post-time {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .post-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px 10px;
+        }
+        
+        .post-actions-left {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #262626;
+            padding: 5px;
+        }
+        
+        .action-btn.liked {
+            color: #ed4956;
+        }
+        
+        .action-btn.saved {
+            color: #0095f6;
+        }
+        
+        .post-likes {
+            font-weight: 600;
+            font-size: 14px;
+            padding: 0 20px 10px;
+        }
+        
+        .post-caption {
+            padding: 0 20px 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .post-username-caption {
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .post-comments {
+            padding: 0 20px 15px;
+        }
+        
+        .comment {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .comment-username {
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .add-comment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            border-top: 1px solid #efefef;
+        }
+        
+        .comment-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            padding: 8px 0;
+        }
+        
+        .post-btn {
+            background: none;
+            border: none;
+            color: #0095f6;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .post-btn:disabled {
+            color: #c7c7c7;
+            cursor: not-allowed;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-top: 1px solid #dbdbdb;
+            padding: 10px 0;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 10px;
+            cursor: pointer;
+            color: #8e8e8e;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active {
+            color: #8b5cf6;
+            background: #f3f4f6;
+        }
+        
+        .nav-item:hover {
+            background: #f3f4f6;
+        }
+        
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding-bottom: 80px;
+        }
+        
+        @media (max-width: 500px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .bottom-nav {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">InstagramClone</div>
+            <div class="header-icons">
+                <i data-lucide="camera" class="icon"></i>
+                <i data-lucide="plus" class="icon"></i>
+                <div class="avatar">👤</div>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- Stories -->
+            <div class="stories">
+                <div class="stories-container">
+                    <div class="story">
+                        <div class="story-avatar">
+                            <i data-lucide="plus" style="width: 20px; height: 20px;"></i>
+                        </div>
+                        <div class="story-username">Your story</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">🌟</div>
+                        <div class="story-username">Story 1</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">🎨</div>
+                        <div class="story-username">Story 2</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">📸</div>
+                        <div class="story-username">Story 3</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">🌍</div>
+                        <div class="story-username">Story 4</div>
+                    </div>
+                    <div class="story">
+                        <div class="story-avatar">🎵</div>
+                        <div class="story-username">Story 5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="posts">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar">👨‍💻</div>
+                            <div>
+                                <div class="post-username">john_doe</div>
+                                <div class="post-time">2h ago</div>
+                            </div>
+                        </div>
+                        <button class="action-btn">
+                            <i data-lucide="more-horizontal" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop" alt="Post" class="post-image">
+                    <div class="post-actions">
+                        <div class="post-actions-left">
+                            <button class="action-btn like-btn" data-post="1">
+                                <i data-lucide="heart" style="width: 24px; height: 24px;"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i data-lucide="message-circle" style="width: 24px; height: 24px;"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i data-lucide="share" style="width: 24px; height: 24px;"></i>
+                            </button>
+                        </div>
+                        <button class="action-btn save-btn" data-post="1">
+                            <i data-lucide="bookmark" style="width: 24px; height: 24px;"></i>
+                        </button>
+                    </div>
+                    <div class="post-likes">
+                        <span class="likes-count" data-post="1">124</span> likes
+                    </div>
+                    <div class="post-caption">
+                        <span class="post-username-caption">john_doe</span>
+                        Beautiful sunset at the beach! 🌅
+                    </div>
+                    <div class="post-comments">
+                        <div class="comment">
+                            <span class="comment-username">jane_smith</span>
+                            Amazing shot!
+                        </div>
+                        <div class="comment">
+                            <span class="comment-username">mike_photo</span>
+                            Love the colors 📸
+                        </div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" class="comment-input" placeholder="Add a comment..." data-post="1">
+                        <button class="post-btn comment-btn" data-post="1">Post</button>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar">🌿</div>
+                            <div>
+                                <div class="post-username">nature_lover</div>
+                                <div class="post-time">4h ago</div>
+                            </div>
+                        </div>
+                        <button class="action-btn">
+                            <i data-lucide="more-horizontal" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop" alt="Post" class="post-image">
+                    <div class="post-actions">
+                        <div class="post-actions-left">
+                            <button class="action-btn like-btn liked" data-post="2">
+                                <i data-lucide="heart" style="width: 24px; height: 24px; fill: currentColor;"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i data-lucide="message-circle" style="width: 24px; height: 24px;"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i data-lucide="share" style="width: 24px; height: 24px;"></i>
+                            </button>
+                        </div>
+                        <button class="action-btn save-btn" data-post="2">
+                            <i data-lucide="bookmark" style="width: 24px; height: 24px;"></i>
+                        </button>
+                    </div>
+                    <div class="post-likes">
+                        <span class="likes-count" data-post="2">89</span> likes
+                    </div>
+                    <div class="post-caption">
+                        <span class="post-username-caption">nature_lover</span>
+                        Morning hike in the mountains ⛰️ #nature #hiking
+                    </div>
+                    <div class="post-comments">
+                        <div class="comment">
+                            <span class="comment-username">adventure_seeker</span>
+                            Which trail is this?
+                        </div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" class="comment-input" placeholder="Add a comment..." data-post="2">
+                        <button class="post-btn comment-btn" data-post="2">Post</button>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-user">
+                            <div class="post-avatar">👨‍🍳</div>
+                            <div>
+                                <div class="post-username">foodie_chef</div>
+                                <div class="post-time">6h ago</div>
+                            </div>
+                        </div>
+                        <button class="action-btn">
+                            <i data-lucide="more-horizontal" style="width: 20px; height: 20px;"></i>
+                        </button>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop" alt="Post" class="post-image">
+                    <div class="post-actions">
+                        <div class="post-actions-left">
+                            <button class="action-btn like-btn" data-post="3">
+                                <i data-lucide="heart" style="width: 24px; height: 24px;"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i data-lucide="message-circle" style="width: 24px; height: 24px;"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i data-lucide="share" style="width: 24px; height: 24px;"></i>
+                            </button>
+                        </div>
+                        <button class="action-btn save-btn saved" data-post="3">
+                            <i data-lucide="bookmark" style="width: 24px; height: 24px; fill: currentColor;"></i>
+                        </button>
+                    </div>
+                    <div class="post-likes">
+                        <span class="likes-count" data-post="3">256</span> likes
+                    </div>
+                    <div class="post-caption">
+                        <span class="post-username-caption">foodie_chef</span>
+                        Homemade pasta with fresh basil 🍝 Recipe in my bio!
+                    </div>
+                    <div class="post-comments">
+                        <div class="comment">
+                            <span class="comment-username">pasta_lover</span>
+                            Looks delicious!
+                        </div>
+                        <div class="comment">
+                            <span class="comment-username">italian_cook</span>
+                            Perfetto! 👌
+                        </div>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" class="comment-input" placeholder="Add a comment..." data-post="3">
+                        <button class="post-btn comment-btn" data-post="3">Post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-container">
+                <div class="nav-item active" data-tab="home">
+                    <i data-lucide="home" style="width: 24px; height: 24px;"></i>
+                    <span class="nav-label">Home</span>
+                </div>
+                <div class="nav-item" data-tab="search">
+                    <i data-lucide="search" style="width: 24px; height: 24px;"></i>
+                    <span class="nav-label">Search</span>
+                </div>
+                <div class="nav-item" data-tab="create">
+                    <i data-lucide="plus" style="width: 24px; height: 24px;"></i>
+                    <span class="nav-label">Create</span>
+                </div>
+                <div class="nav-item" data-tab="activity">
+                    <i data-lucide="heart" style="width: 24px; height: 24px;"></i>
+                    <span class="nav-label">Activity</span>
+                </div>
+                <div class="nav-item" data-tab="profile">
+                    <i data-lucide="user" style="width: 24px; height: 24px;"></i>
+                    <span class="nav-label">Profile</span>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Post data
+        const posts = {
+            1: { likes: 124, liked: false, saved: false },
+            2: { likes: 89, liked: true, saved: false },
+            3: { likes: 256, liked: false, saved: true }
+        };
+
+        // Like functionality
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const postId = this.dataset.post;
+                const post = posts[postId];
+                
+                post.liked = !post.liked;
+                post.likes = post.liked ? post.likes + 1 : post.likes - 1;
+                
+                this.classList.toggle('liked');
+                document.querySelector(`[data-post="${postId}"].likes-count`).textContent = post.likes;
+            });
+        });
+
+        // Save functionality
+        document.querySelectorAll('.save-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const postId = this.dataset.post;
+                const post = posts[postId];
+                
+                post.saved = !post.saved;
+                this.classList.toggle('saved');
+            });
+        });
+
+        // Comment functionality
+        document.querySelectorAll('.comment-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const postId = this.dataset.post;
+                const input = document.querySelector(`input[data-post="${postId}"]`);
+                const comment = input.value.trim();
+                
+                if (comment) {
+                    const commentsDiv = input.closest('.post').querySelector('.post-comments');
+                    const newComment = document.createElement('div');
+                    newComment.className = 'comment';
+                    newComment.innerHTML = `
+                        <span class="comment-username">current_user</span>
+                        ${comment}
+                    `;
+                    commentsDiv.appendChild(newComment);
+                    input.value = '';
+                }
+            });
+        });
+
+        // Enter key for comments
+        document.querySelectorAll('.comment-input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const postId = this.dataset.post;
+                    document.querySelector(`[data-post="${postId}"].comment-btn`).click();
+                }
+            });
+        });
+
+        // Bottom navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
